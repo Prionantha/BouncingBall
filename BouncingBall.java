@@ -10,6 +10,11 @@ public class BouncingBall extends JPanel {
             wall.drawWall(graphics);
             ball.drawBall(graphics);
         }
+
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(width, height);
+        }
     }
 
     private final int width, height;
