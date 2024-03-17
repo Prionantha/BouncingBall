@@ -33,6 +33,11 @@ public class Ball {
         }
     }
 
+    public void collide() {
+        speedX = -speedX;
+        speedY = -speedY;
+    }
+
     public void drawBall(Graphics graphics) {
         graphics.setColor(Color.YELLOW);
         graphics.fillOval((int)(posX - RADIUS), (int)(posY - RADIUS), RADIUS * 2, RADIUS * 2);
