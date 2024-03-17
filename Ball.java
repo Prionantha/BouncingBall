@@ -4,7 +4,7 @@ public class Ball {
 
     private Wall wall;
     private float posX, posY, speedX, speedY;
-    private final int RADIUS = 5;
+    private final int RADIUS = 30;
 
     public Ball(float posX, float posY, float speedX, float speedY, Wall wall) {
         this.posX = posX;
@@ -33,9 +33,22 @@ public class Ball {
         }
     }
 
+    public float getPosX() {
+        return posX;
+    }
+
+    public float getPosY() {
+        return posY;
+    }
+
+    public int getRadius() {
+        return RADIUS;
+    }
+
     public void collide() {
         speedX = -speedX;
         speedY = -speedY;
+        move();
     }
 
     public void drawBall(Graphics graphics) {

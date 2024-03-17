@@ -65,15 +65,33 @@ public class BouncingBall extends JPanel {
         this.add(canvas, BorderLayout.CENTER);
     }
 
+    private void ballControl() {
+        for (int i = 0; i < numBalls; i++) {
+            for (int j = 0; j < numBalls; j++) {
+                if (i == j) {
+                    continue;
+                }
+                Ball a = balls.get(i);
+                Ball b = balls.get(j);
+                if (Math.pow(a.getPosX() - b.getPosX(), 2) + 
+                    Math.pow(a.getPosY() - b.getPosY(), 2) < 
+                    Math.pow(a.getRadius() + b.getRadius(), 2)) {
+                    a.collide();
+                    b.collide();
+                }
+            }
+        }
+        for (int i = 0; i < numBalls; i++) {
+            Ball ball = balls.get(i);
+            ball.move();
+        }
+    }
+
     private void startThread() {
         Thread thread = new Thread() {
             public void run() {
                 while (true) {
-                    for (int i = 0; i < numBalls; i++) {
-                        Ball ball = balls.get(i);
-                        ball.move();
-                    }
-                    // ball.move();
+                    ballControl();
                     repaint();
                     try {
                         Thread.sleep(REFRESH_INTERVAL);
