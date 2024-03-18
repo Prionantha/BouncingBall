@@ -83,8 +83,20 @@ public class Ball implements Runnable {
     }
 
     public void collide(Ball other) {
-        speedX -= (other.getPosX() - this.getPosX()) * 0.1 / 30;
-        speedY -= (other.getPosY() - this.getPosY()) * 0.1 / 30;
+        float totalSpeed = speedX * speedX + speedY * speedY;
+        float ratio = (other.getPosY() - this.getPosY()) / (other.getPosX() - this.getPosX());
+        float newSpeedX = (float) Math.sqrt(totalSpeed / (ratio * ratio + 1));
+        float newSpeedY = ratio * newSpeedX;
+        if (other.getPosY() > this.getPosY()) {
+            speedY = -1 * newSpeedY;
+        } else {
+            speedY = newSpeedY;
+        }
+        if (other.getPosX() > this.getPosX()) {
+            speedX = -1 * newSpeedX;
+        } else {
+            speedX = newSpeedX;
+        }
         move();
     }
 

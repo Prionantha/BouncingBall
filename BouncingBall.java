@@ -33,7 +33,7 @@ public class BouncingBall extends JPanel {
     private PaintCanvas canvas;
 
     private final int DEFAULT_SPEED = 3;
-    private final int REFRESH_INTERVAL = 30;
+    private final int REFRESH_INTERVAL = 10;
     
     public BouncingBall(int width, int height) {
         this.width = width;
