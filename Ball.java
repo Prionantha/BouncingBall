@@ -1,20 +1,27 @@
 import java.awt.*;
+import java.util.List;
 
-public class Ball {
+public class Ball implements Runnable {
 
     private Wall wall;
     private float posX, posY, speedX, speedY;
-    private final int RADIUS = 30;
+    private List<Ball> balls;
 
-    public Ball(float posX, float posY, float speedX, float speedY, Wall wall) {
+    private final int RADIUS = 30;
+    private final int REFRESH_INTERVAL = 30;
+
+    public Ball(float posX, float posY, float speedX, float speedY, Wall wall, List<Ball> balls) {
         this.posX = posX;
         this.posY = posY;
         this.speedX = speedX;
         this.speedY = speedY;
         this.wall = wall;
+        this.balls = balls;
     }
 
     public void move() {
+        // System.out.println(this.posX);
+        checkCollisions();
         this.posX = posX + speedX;
         this.posY = posY + speedY;
         if (posX <= RADIUS) {
@@ -45,15 +52,45 @@ public class Ball {
         return RADIUS;
     }
 
+    private void checkCollisions() {
+        synchronized (this) {
+            for (Ball ball: balls) {
+                if (this.equals(ball)) {
+                    continue;
+                }
+                synchronized(ball) {
+                    if (Math.pow(this.getPosX() - ball.getPosX(), 2) + 
+                        Math.pow(this.getPosY() - ball.getPosY(), 2) < 
+                        Math.pow(this.getRadius() + ball.getRadius(), 2)) {
+                        this.collide();
+                        ball.collide();
+                    }
+                }
+            }
+        }
+    }
+
     public void collide() {
         speedX = -speedX;
         speedY = -speedY;
-        move();
     }
 
     public void drawBall(Graphics graphics) {
+        // System.out.println(this.posX);
         graphics.setColor(Color.YELLOW);
         graphics.fillOval((int)(posX - RADIUS), (int)(posY - RADIUS), RADIUS * 2, RADIUS * 2);
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            move();
+            try {
+                Thread.sleep(REFRESH_INTERVAL);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
     
 }
