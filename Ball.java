@@ -6,11 +6,13 @@ public class Ball implements Runnable {
     private Wall wall;
     private float posX, posY, speedX, speedY;
     private List<Ball> balls;
+    private int id;
 
     private final int RADIUS = 30;
     private final int REFRESH_INTERVAL = 30;
 
-    public Ball(float posX, float posY, float speedX, float speedY, Wall wall, List<Ball> balls) {
+    public Ball(int id, float posX, float posY, float speedX, float speedY, Wall wall, List<Ball> balls) {
+        this.id = id;
         this.posX = posX;
         this.posY = posY;
         this.speedX = speedX;
@@ -20,7 +22,6 @@ public class Ball implements Runnable {
     }
 
     public void move() {
-        // System.out.println(this.posX);
         checkCollisions();
         this.posX = posX + speedX;
         this.posY = posY + speedY;
@@ -52,18 +53,30 @@ public class Ball implements Runnable {
         return RADIUS;
     }
 
+    public int getId() {
+        return id;
+    }
+
     private void checkCollisions() {
-        synchronized (this) {
-            for (Ball ball: balls) {
-                if (this.equals(ball)) {
-                    continue;
-                }
-                synchronized(ball) {
-                    if (Math.pow(this.getPosX() - ball.getPosX(), 2) + 
-                        Math.pow(this.getPosY() - ball.getPosY(), 2) < 
-                        Math.pow(this.getRadius() + ball.getRadius(), 2)) {
-                        this.collide();
-                        ball.collide();
+        for (Ball ball: balls) {
+            if (ball.id == this.id) {
+                continue;
+            }
+            Ball first, second;
+            if (ball.id < this.id) {
+                first = ball;
+                second = this;
+            } else {
+                first = this;
+                second = ball;
+            }
+            synchronized (first) {
+                synchronized(second) {
+                    if (Math.pow(first.getPosX() - second.getPosX(), 2) + 
+                        Math.pow(first.getPosY() - second.getPosY(), 2) < 
+                        Math.pow(first.getRadius() + second.getRadius(), 2)) {
+                        first.collide();
+                        second.collide();
                     }
                 }
             }
@@ -76,7 +89,6 @@ public class Ball implements Runnable {
     }
 
     public void drawBall(Graphics graphics) {
-        // System.out.println(this.posX);
         graphics.setColor(Color.YELLOW);
         graphics.fillOval((int)(posX - RADIUS), (int)(posY - RADIUS), RADIUS * 2, RADIUS * 2);
     }

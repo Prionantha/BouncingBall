@@ -57,7 +57,7 @@ public class BouncingBall extends JPanel {
         balls = new ArrayList<>();
         for (int i = 0; i < numBalls; i++) {
             float posX = getRandom(width), posY = getRandom(height), speedX = getRandom(DEFAULT_SPEED), speedY = getRandom(DEFAULT_SPEED);
-            Ball ball = new Ball(posX, posY, speedX, speedY, wall, balls);
+            Ball ball = new Ball(i, posX, posY, speedX, speedY, wall, balls);
             balls.add(ball);
         }
     }
