@@ -22,7 +22,6 @@ public class Ball implements Runnable {
     }
 
     public void move() {
-        checkCollisions();
         this.posX = posX + speedX;
         this.posY = posY + speedY;
         if (posX <= RADIUS) {
@@ -59,7 +58,7 @@ public class Ball implements Runnable {
 
     private void checkCollisions() {
         for (Ball ball: balls) {
-            if (ball.id == this.id) {
+            if (ball.getId() == this.getId()) {
                 continue;
             }
             Ball first, second;
@@ -75,17 +74,18 @@ public class Ball implements Runnable {
                     if (Math.pow(first.getPosX() - second.getPosX(), 2) + 
                         Math.pow(first.getPosY() - second.getPosY(), 2) < 
                         Math.pow(first.getRadius() + second.getRadius(), 2)) {
-                        first.collide();
-                        second.collide();
+                        first.collide(second);
+                        second.collide(first);
                     }
                 }
             }
         }
     }
 
-    public void collide() {
-        speedX = -speedX;
-        speedY = -speedY;
+    public void collide(Ball other) {
+        speedX -= (other.getPosX() - this.getPosX()) * 0.1 / 30;
+        speedY -= (other.getPosY() - this.getPosY()) * 0.1 / 30;
+        move();
     }
 
     public void drawBall(Graphics graphics) {
@@ -96,6 +96,7 @@ public class Ball implements Runnable {
     @Override
     public void run() {
         while (true) {
+            checkCollisions();
             move();
             try {
                 Thread.sleep(REFRESH_INTERVAL);
