@@ -72,7 +72,7 @@ public class Ball implements Runnable {
             synchronized (first) {
                 synchronized(second) {
                     if (Math.pow(first.getPosX() - second.getPosX(), 2) + 
-                        Math.pow(first.getPosY() - second.getPosY(), 2) < 
+                        Math.pow(first.getPosY() - second.getPosY(), 2) <= 
                         Math.pow(first.getRadius() + second.getRadius(), 2)) {
                         first.collide(second);
                         second.collide(first);
@@ -84,7 +84,7 @@ public class Ball implements Runnable {
 
     public void collide(Ball other) {
         float totalSpeed = speedX * speedX + speedY * speedY;
-        float ratio = (other.getPosY() - this.getPosY()) / (other.getPosX() - this.getPosX());
+        float ratio = Math.abs((other.getPosY() - this.getPosY()) / (other.getPosX() - this.getPosX()));
         float newSpeedX = (float) Math.sqrt(totalSpeed / (ratio * ratio + 1));
         float newSpeedY = ratio * newSpeedX;
         if (other.getPosY() > this.getPosY()) {
@@ -97,7 +97,6 @@ public class Ball implements Runnable {
         } else {
             speedX = newSpeedX;
         }
-        move();
     }
 
     public void drawBall(Graphics graphics) {
