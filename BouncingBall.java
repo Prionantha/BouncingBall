@@ -34,6 +34,7 @@ public class BouncingBall extends JPanel {
 
     private final int DEFAULT_SPEED = 3;
     private final int REFRESH_INTERVAL = 3;
+    private final int DEFAULT_RADIUS = 30;
     
     public BouncingBall(int width, int height) {
         this.width = width;
@@ -56,8 +57,10 @@ public class BouncingBall extends JPanel {
     private void initializeBalls() {
         balls = new ArrayList<>();
         for (int i = 0; i < numBalls; i++) {
-            float posX = getRandom(width), posY = getRandom(height), speedX = getRandom(DEFAULT_SPEED), speedY = getRandom(DEFAULT_SPEED);
-            Ball ball = new Ball(i, posX, posY, speedX, speedY, wall, balls);
+            float posX = getRandom(width), posY = getRandom(height);
+            float speedX = getRandom(DEFAULT_SPEED), speedY = getRandom(DEFAULT_SPEED);
+            int radius = (int)getRandom(DEFAULT_RADIUS) + 10;
+            Ball ball = new Ball(i, posX, posY, speedX, speedY, radius, wall, balls);
             balls.add(ball);
         }
     }

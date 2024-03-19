@@ -5,18 +5,20 @@ public class Ball implements Runnable {
 
     private Wall wall;
     private float posX, posY, speedX, speedY;
+    private int radius;
     private List<Ball> balls;
     private int id;
 
-    private final int RADIUS = 30;
+
     private final int REFRESH_INTERVAL = 30;
 
-    public Ball(int id, float posX, float posY, float speedX, float speedY, Wall wall, List<Ball> balls) {
+    public Ball(int id, float posX, float posY, float speedX, float speedY, int radius, Wall wall, List<Ball> balls) {
         this.id = id;
         this.posX = posX;
         this.posY = posY;
         this.speedX = speedX;
         this.speedY = speedY;
+        this.radius = radius;
         this.wall = wall;
         this.balls = balls;
     }
@@ -24,18 +26,18 @@ public class Ball implements Runnable {
     public void move() {
         this.posX = posX + speedX;
         this.posY = posY + speedY;
-        if (posX <= RADIUS) {
-            posX = RADIUS;
+        if (posX <= radius) {
+            posX = radius;
             speedX = -speedX;
-        } else if (posX >= this.wall.width - RADIUS) {
-            posX = this.wall.width - RADIUS;
+        } else if (posX >= this.wall.width - radius) {
+            posX = this.wall.width - radius;
             speedX = -speedX;
         }
-        if (posY <= RADIUS) {
-            posY = RADIUS;
+        if (posY <= radius) {
+            posY = radius;
             speedY = -speedY;
-        } else if (posY >= this.wall.height - RADIUS) {
-            posY = this.wall.height - RADIUS;
+        } else if (posY >= this.wall.height - radius) {
+            posY = this.wall.height - radius;
             speedY = -speedY;
         }
     }
@@ -49,7 +51,7 @@ public class Ball implements Runnable {
     }
 
     public int getRadius() {
-        return RADIUS;
+        return radius;
     }
 
     public int getId() {
@@ -101,7 +103,7 @@ public class Ball implements Runnable {
 
     public void drawBall(Graphics graphics) {
         graphics.setColor(Color.YELLOW);
-        graphics.fillOval((int)(posX - RADIUS), (int)(posY - RADIUS), RADIUS * 2, RADIUS * 2);
+        graphics.fillOval((int)(posX - radius), (int)(posY - radius), radius * 2, radius * 2);
     }
 
     @Override
