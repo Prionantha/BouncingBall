@@ -1,26 +1,36 @@
 import java.awt.*;
 import java.util.List;
+import java.util.Random;
 
 public class Ball implements Runnable {
 
-    private Wall wall;
     private float posX, posY, speedX, speedY;
-    private int radius;
+    private int radius, width, height;
     private List<Ball> balls;
     private int id;
-
+    private int color;
 
     private final int REFRESH_INTERVAL = 30;
+    private final float[][] palette = new float[][]{
+        {0.73f, 0.65f, 0.69f},
+        {0.7f, 0.67f, 0.75f},
+        {0.694f, 0.71f, 0.784f},
+        {0.75f, 0.84f, 0.89f},
+        {0.78f, 0.92f, 0.94f}
+    };
 
-    public Ball(int id, float posX, float posY, float speedX, float speedY, int radius, Wall wall, List<Ball> balls) {
+    public Ball(int id, float posX, float posY, float speedX, float speedY, int radius, int width, int height, List<Ball> balls) {
         this.id = id;
         this.posX = posX;
         this.posY = posY;
         this.speedX = speedX;
         this.speedY = speedY;
         this.radius = radius;
-        this.wall = wall;
+        this.width = width;
+        this.height = height;
         this.balls = balls;
+        Random r = new Random();
+        this.color = r.nextInt(5);
     }
 
     public void move() {
@@ -29,15 +39,15 @@ public class Ball implements Runnable {
         if (posX <= radius) {
             posX = radius;
             speedX = -speedX;
-        } else if (posX >= this.wall.width - radius) {
-            posX = this.wall.width - radius;
+        } else if (posX >= width - radius) {
+            posX = width - radius;
             speedX = -speedX;
         }
         if (posY <= radius) {
             posY = radius;
             speedY = -speedY;
-        } else if (posY >= this.wall.height - radius) {
-            posY = this.wall.height - radius;
+        } else if (posY >= height - radius) {
+            posY = height - radius;
             speedY = -speedY;
         }
     }
@@ -102,7 +112,8 @@ public class Ball implements Runnable {
     }
 
     public void drawBall(Graphics graphics) {
-        graphics.setColor(Color.YELLOW);
+        float[] color = palette[this.color];
+        graphics.setColor(new Color(color[0], color[1], color[2], 0.9f));
         graphics.fillOval((int)(posX - radius), (int)(posY - radius), radius * 2, radius * 2);
     }
 

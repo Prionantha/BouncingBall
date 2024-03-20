@@ -11,7 +11,7 @@ public class Wall {
     }
 
     public void drawWall(Graphics graphics) {
-        graphics.setColor(Color.black);
+        graphics.setColor(new Color(1, 1, 1, 0.9f));
         graphics.fillRect(0, 0, width, height);
     }
 

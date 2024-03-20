@@ -9,14 +9,12 @@ public class BouncingBall extends JPanel {
     class PaintCanvas extends JPanel {
         @Override
         public void paintComponent(Graphics graphics) {
-            synchronized (graphics) {
-                super.paintComponent(graphics);
-                wall.drawWall(graphics);
-                for (int i = 0; i < numBalls; i++) {
-                    Ball ball = balls.get(i);
-                    ball.drawBall(graphics);
-                }  
-            }
+            super.paintComponent(graphics);
+            wall.drawWall(graphics);
+            for (int i = 0; i < numBalls; i++) {
+                Ball ball = balls.get(i);
+                ball.drawBall(graphics);
+            }  
         }
 
         @Override
@@ -32,9 +30,9 @@ public class BouncingBall extends JPanel {
     private int numBalls = 10;
     private PaintCanvas canvas;
 
-    private final int DEFAULT_SPEED = 3;
-    private final int REFRESH_INTERVAL = 3;
-    private final int DEFAULT_RADIUS = 30;
+    private final int DEFAULT_SPEED = 2;
+    private final int REFRESH_INTERVAL = 30;
+    private final int DEFAULT_RADIUS = 60;
     
     public BouncingBall(int width, int height) {
         this.width = width;
@@ -59,14 +57,15 @@ public class BouncingBall extends JPanel {
         for (int i = 0; i < numBalls; i++) {
             float posX = getRandom(width), posY = getRandom(height);
             float speedX = getRandom(DEFAULT_SPEED), speedY = getRandom(DEFAULT_SPEED);
-            int radius = (int)getRandom(DEFAULT_RADIUS) + 10;
-            Ball ball = new Ball(i, posX, posY, speedX, speedY, radius, wall, balls);
+            int radius = (int)getRandom(DEFAULT_RADIUS) + 15;
+            Ball ball = new Ball(i, posX, posY, speedX, speedY, radius, width, height, balls);
             balls.add(ball);
         }
     }
 
     private void initializePanel() {
         this.canvas = new PaintCanvas();
+        this.canvas.setOpaque(false);
         this.setLayout(new BorderLayout());
         this.add(canvas, BorderLayout.CENTER);
     }
