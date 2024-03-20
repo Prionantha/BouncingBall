@@ -70,6 +70,12 @@ public class BouncingBall extends JPanel {
         this.add(canvas, BorderLayout.CENTER);
     }
 
+    public void pushBalls(int x, int y) {
+        for (Ball ball: balls) {
+            ball.setAcc(2);
+        }
+    }
+
     private void startThread() {
         threads = new ArrayList<>();
         for (int i = 0; i < numBalls; i++) {

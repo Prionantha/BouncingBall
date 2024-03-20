@@ -9,8 +9,10 @@ public class Ball implements Runnable {
     private List<Ball> balls;
     private int id;
     private int color;
+    private float acc;
 
     private final int REFRESH_INTERVAL = 30;
+    private final float DEC = 0.1f;
     private final float[][] palette = new float[][]{
         {0.73f, 0.65f, 0.69f},
         {0.7f, 0.67f, 0.75f},
@@ -29,26 +31,34 @@ public class Ball implements Runnable {
         this.width = width;
         this.height = height;
         this.balls = balls;
+        this.acc = 1;
         Random r = new Random();
         this.color = r.nextInt(5);
     }
 
     public void move() {
-        this.posX = posX + speedX;
-        this.posY = posY + speedY;
+        this.posX = posX + speedX * acc;
+        this.posY = posY + speedY * acc;
+        if (acc > 1) {
+            acc -= DEC;
+        }
         if (posX <= radius) {
             posX = radius;
             speedX = -speedX;
+            return;
         } else if (posX >= width - radius) {
             posX = width - radius;
             speedX = -speedX;
+            return;
         }
         if (posY <= radius) {
             posY = radius;
             speedY = -speedY;
+            return;
         } else if (posY >= height - radius) {
             posY = height - radius;
             speedY = -speedY;
+            return;
         }
     }
 
@@ -66,6 +76,10 @@ public class Ball implements Runnable {
 
     public int getId() {
         return id;
+    }
+
+    public void setAcc(float acc) {
+        this.acc = acc;
     }
 
     private void checkCollisions() {
