@@ -78,8 +78,9 @@ public class Ball implements Runnable {
         return id;
     }
 
-    public void setAcc(float acc) {
-        this.acc = acc;
+    public void push(float x, float y) {
+        this.acc = 3f;
+        this.collide(x, y);
     }
 
     private void checkCollisions() {
@@ -100,25 +101,25 @@ public class Ball implements Runnable {
                     if (Math.pow(first.getPosX() - second.getPosX(), 2) + 
                         Math.pow(first.getPosY() - second.getPosY(), 2) <= 
                         Math.pow(first.getRadius() + second.getRadius(), 2)) {
-                        first.collide(second);
-                        second.collide(first);
+                        first.collide(second.getPosX(), second.getPosY());
+                        second.collide(first.getPosX(), first.getPosY());
                     }
                 }
             }
         }
     }
 
-    public void collide(Ball other) {
+    public void collide(float x, float y) {
         float totalSpeed = speedX * speedX + speedY * speedY;
-        float ratio = Math.abs((other.getPosY() - this.getPosY()) / (other.getPosX() - this.getPosX()));
+        float ratio = Math.abs((y - this.getPosY()) / (x - this.getPosX()));
         float newSpeedX = (float) Math.sqrt(totalSpeed / (ratio * ratio + 1));
         float newSpeedY = ratio * newSpeedX;
-        if (other.getPosY() > this.getPosY()) {
+        if (y > this.getPosY()) {
             speedY = -1 * newSpeedY;
         } else {
             speedY = newSpeedY;
         }
-        if (other.getPosX() > this.getPosX()) {
+        if (x > this.getPosX()) {
             speedX = -1 * newSpeedX;
         } else {
             speedX = newSpeedX;

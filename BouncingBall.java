@@ -72,7 +72,10 @@ public class BouncingBall extends JPanel {
 
     public void pushBalls(int x, int y) {
         for (Ball ball: balls) {
-            ball.setAcc(2);
+            if (Math.pow(x - ball.getPosX(), 2) + 
+                Math.pow(y - ball.getPosY(), 2) < 200 * 200) {
+                    ball.push(x, y);
+            }
         }
     }
 
